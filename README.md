@@ -13,9 +13,9 @@
 2. **متغيرات البيئة**: انسخ `.env.example` إلى `.env.local` واملأ القيم (راجع التعليقات
    جوه الملف). شغال دلوقتي بـ `NEXT_PUBLIC_USE_MOCK_CATALOG=false` — يعني بيانات حقيقية
    من Supabase.
-3. **روابط التحميل**: الـ APK بقى مستضاف على Supabase Storage مش جوه الموقع نفسه — راجع
-   "APK hosting" في [`supabase/README.md`](supabase/README.md). السبب: Cloudflare Workers
-   بيرفض أي ملف استاتيكي أكبر من 25MB، والـ APK حجمه 68MB.
+3. **روابط التحميل**: ✅ الـ APK متاستضاف كـ GitHub Release asset (مش جوه الموقع نفسه —
+   Cloudflare Workers بيرفض أي ملف أكبر من 25MB، وSupabase Storage سقفه 50MB على الخطة
+   المجانية). التفاصيل في "APK hosting" في [`supabase/README.md`](supabase/README.md).
 4. **بيانات التواصل**: `NEXT_PUBLIC_CONTACT_PHONE` / `_WHATSAPP` / `_EMAIL` — متملية بالبيانات
    اللي بعتيها. لو رقم الواتساب مختلف عن رقم التليفون، عدّلي `NEXT_PUBLIC_CONTACT_WHATSAPP` في
    `.env.local`.
@@ -42,8 +42,9 @@ npm run dev
 
 - ✅ الـ migration اتطبقت، `NEXT_PUBLIC_USE_MOCK_CATALOG=false`
 - اضبط `NEXT_PUBLIC_SITE_URL` على الدومين الحقيقي بعد الديبلوي (بيتحكم في sitemap وروابط SEO)
-- ارفع الـ APK على Supabase Storage (راجع `supabase/README.md`) أو حطي رابط Google Play
+- ✅ الـ APK متاستضاف على GitHub Releases (راجع `supabase/README.md`) — أو حطي رابط Google Play بدله لو التطبيق نزل على المتجر
 - ✅ بيانات التواصل متملية
+- ✅ الريبو اترفع على GitHub: https://github.com/osama-Yosef/-Release
 
 ## النشر على Cloudflare Workers
 

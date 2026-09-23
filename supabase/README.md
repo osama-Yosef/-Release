@@ -28,28 +28,23 @@ your Supabase project. To apply it:
    but that data is clearly marked as mock and must not be mistaken for the
    real catalogue.
 
-## APK hosting (`0077_releases_storage_bucket.sql`)
+## APK hosting — GitHub Releases
 
 The website deploys to Cloudflare Workers, which rejects any single static
-asset over 25MB — the APK (~68MB) can't ship inside the website's own build.
-`migrations/0077_releases_storage_bucket.sql` adds a public `releases`
-storage bucket (same public-read/admin-write pattern as the existing
-`products` bucket in `0012_storage_buckets_policies.sql`).
+asset over 25MB, and the APK (~68MB) also exceeds Supabase Storage's 50MB
+hard cap on the free plan — so it's hosted as a GitHub Release asset on
+[osama-Yosef/-Release](https://github.com/osama-Yosef/-Release) instead,
+which has no such limit (up to 2GB/file) and needs no account/payment setup.
 
-To finish wiring the download button:
+Current release: `v1.0.0`, asset `default.apk` (GitHub renamed the uploaded
+`مكوجي.apk` — Arabic filenames aren't preserved on upload), reachable at:
+`https://github.com/osama-Yosef/-Release/releases/download/v1.0.0/default.apk`
+— already set as `NEXT_PUBLIC_APK_URL` in `.env.local`.
 
-1. Run `migrations/0077_releases_storage_bucket.sql` the same way as `0076_*`.
-2. In the Supabase Dashboard → Storage → `releases` bucket, upload the APK
-   file **named exactly `mokoji.apk`** (or update `NEXT_PUBLIC_APK_URL`
-   below to match whatever path you actually use).
-3. Confirm it's reachable at:
-   `https://jtvformbjielhhjtnsgh.supabase.co/storage/v1/object/public/releases/mokoji.apk`
-4. That URL is already set as `NEXT_PUBLIC_APK_URL` in `.env.local` — no
-   further change needed once the file is uploaded.
-
-When you release a new version, upload the new file under a new name (e.g.
-`mokoji-1.1.0.apk`) and update `NEXT_PUBLIC_APK_URL` — don't overwrite the
-old file while it might still be mid-download for someone.
+**To publish a new version:** go to the repo → Releases → Draft a new
+release → new tag (e.g. `v1.1.0`) → attach the new APK → Publish, then
+update `NEXT_PUBLIC_APK_URL` to the new download URL. Don't overwrite an
+existing release's asset while it might still be mid-download for someone.
 
 ## Env vars this website needs
 
