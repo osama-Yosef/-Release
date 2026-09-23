@@ -9,16 +9,13 @@
 1. **الداتابيز**: راجع [`supabase/README.md`](supabase/README.md) — لازم تطبّق
    `supabase/migrations/0076_public_website_catalog_access.sql` على مشروع Supabase
    عشان الموقع يقدر يقرأ المنتجات المنشورة فقط، من غير ما يلمس أي صلاحية موجودة.
+   ✅ اتعمل بالفعل.
 2. **متغيرات البيئة**: انسخ `.env.example` إلى `.env.local` واملأ القيم (راجع التعليقات
-   جوه الملف). `.env.local` الحالي فيه مفاتيح Supabase الحقيقية (العامة/anon) بس شغال
-   حاليًا بـ `NEXT_PUBLIC_USE_MOCK_CATALOG=true` — يعني بيعرض بيانات تجريبية واضحة لحد ما
-   تطبّق الـ migration، بعدها غيّرها لـ `false`.
-3. **روابط التحميل**: `NEXT_PUBLIC_APK_URL` أو `NEXT_PUBLIC_PLAY_STORE_URL` — من غيرهم
-   زرار التحميل بيظهر "هيتوفر قريبًا" بدل رابط مكسور. حاليًا فيه ملف APK حقيقي (68MB)
-   في `public/downloads/mokoji.apk`، مربوط عليه `NEXT_PUBLIC_APK_URL=/downloads/mokoji.apk`.
-   **ملحوظة**: لو هترفعي الكود على git، الملف ده هيتضاف للـ repo بحجمه الكامل ويفضل موجود
-   في التاريخ حتى لو استبدلتيه بعدين. لو ده مش مريح، الأفضل ترفعيه على Supabase Storage أو
-   أي object storage وتحطي رابطه في `NEXT_PUBLIC_APK_URL` بدل الملف المحلي.
+   جوه الملف). شغال دلوقتي بـ `NEXT_PUBLIC_USE_MOCK_CATALOG=false` — يعني بيانات حقيقية
+   من Supabase.
+3. **روابط التحميل**: الـ APK بقى مستضاف على Supabase Storage مش جوه الموقع نفسه — راجع
+   "APK hosting" في [`supabase/README.md`](supabase/README.md). السبب: Cloudflare Workers
+   بيرفض أي ملف استاتيكي أكبر من 25MB، والـ APK حجمه 68MB.
 4. **بيانات التواصل**: `NEXT_PUBLIC_CONTACT_PHONE` / `_WHATSAPP` / `_EMAIL` — متملية بالبيانات
    اللي بعتيها. لو رقم الواتساب مختلف عن رقم التليفون، عدّلي `NEXT_PUBLIC_CONTACT_WHATSAPP` في
    `.env.local`.
@@ -43,7 +40,35 @@ npm run dev
 
 ## قبل الإطلاق (production)
 
-- طبّق الـ migration وحوّل `NEXT_PUBLIC_USE_MOCK_CATALOG` لـ `false`
-- اضبط `NEXT_PUBLIC_SITE_URL` على الدومين الحقيقي (بيتحكم في sitemap وروابط SEO)
-- ارفع رابط APK حقيقي أو رابط المتجر
-- املأ بيانات التواصل الحقيقية لو متاحة
+- ✅ الـ migration اتطبقت، `NEXT_PUBLIC_USE_MOCK_CATALOG=false`
+- اضبط `NEXT_PUBLIC_SITE_URL` على الدومين الحقيقي بعد الديبلوي (بيتحكم في sitemap وروابط SEO)
+- ارفع الـ APK على Supabase Storage (راجع `supabase/README.md`) أو حطي رابط Google Play
+- ✅ بيانات التواصل متملية
+
+## النشر على Cloudflare Workers
+
+المشروع مجهز يستخدم [OpenNext](https://opennext.js.org/cloudflare) للنشر على
+Cloudflare Workers (مش Pages — القرار إن Workers هو الطريقة الرسمية الموصى بيها
+من Cloudflare حاليًا لتطبيقات Next.js الكاملة).
+
+**للنشر اليدوي من جهازك:**
+
+```bash
+npm run cf:deploy
+```
+
+(محتاجة تعملي `npx wrangler login` مرة واحدة الأول لو لسه معملتيش).
+
+**للنشر التلقائي عند كل push (الموصى بيه):**
+
+1. ارفعي الريبو على GitHub.
+2. من Cloudflare Dashboard → Workers & Pages → Create → استوردي من Git واختاري الريبو.
+3. Build command: `npm run cf:deploy` (أو حسب ما يقترحه Cloudflare تلقائيًا لمشاريع
+   OpenNext/Next.js — راجعي الإعدادات المقترحة وقت الربط).
+4. **مهم**: ضيفي في إعدادات الـ Worker (Settings → Variables) كل المتغيرات الموجودة في
+   `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+   `NEXT_PUBLIC_USE_MOCK_CATALOG=false`, `NEXT_PUBLIC_APK_URL`, بيانات التواصل، وبعد
+   الديبلوي حدّثي `NEXT_PUBLIC_SITE_URL` بالدومين الفعلي) — الملف `.env.local` نفسه
+   متعمدة إنه مش مرفوع على git.
+5. بعد أول ديبلوي هيديكي Cloudflare رابط `*.workers.dev` — تقدري بعدين تربطي دومين مخصص
+   من نفس لوحة التحكم.
