@@ -1,26 +1,135 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Cairo";
+  src: url("/fonts/Cairo-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cairo";
+  src: url("/fonts/Cairo-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cairo";
+  src: url("/fonts/Cairo-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cairo";
+  src: url("/fonts/Cairo-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cairo";
+  src: url("/fonts/Cairo-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Dark "gallery" foundation — a warmed, desaturated navy-charcoal, never
+     pure black (spec: "do not make everything black"). */
+  --ink-950: #0a1216;
+  --ink-900: #0f191e;
+  --ink-800: #172329;
+  --ink-700: #1f2e35;
+  --ink-600: #2a3d45;
+  --ink-line: #2c414a;
+
+  /* Brand — sampled from the Mokoji mark, unchanged from the app. */
+  --navy: #244a61;
+  --teal: #67a9b2;
+  --teal-600: #2f7784;
+  --teal-700: #235f6a;
+  --gold: #e4b83f;
+  --gold-600: #c89a2e;
+  --gold-700: #a87f22;
+  --paper: #f4f9fa;
+  --paper-dim: #e3eff1;
+
+  --text-on-dark: #f4f9fa;
+  --text-on-dark-muted: #9db3ba;
+  --text-on-light: #16323f;
+  --text-on-light-muted: #5b7280;
+
+  --background: var(--ink-950);
+  --foreground: var(--text-on-dark);
+
+  --radius-card: 0.375rem;
 }
 
 @theme inline {
+  --color-ink-950: var(--ink-950);
+  --color-ink-900: var(--ink-900);
+  --color-ink-800: var(--ink-800);
+  --color-ink-700: var(--ink-700);
+  --color-ink-600: var(--ink-600);
+  --color-ink-line: var(--ink-line);
+
+  --color-navy: var(--navy);
+  --color-teal: var(--teal);
+  --color-teal-600: var(--teal-600);
+  --color-teal-700: var(--teal-700);
+  --color-gold: var(--gold);
+  --color-gold-600: var(--gold-600);
+  --color-gold-700: var(--gold-700);
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+
+  --color-on-dark: var(--text-on-dark);
+  --color-on-dark-muted: var(--text-on-dark-muted);
+  --color-on-light: var(--text-on-light);
+  --color-on-light-muted: var(--text-on-light-muted);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --font-sans: "Cairo", "Segoe UI", sans-serif;
+  --font-tech: var(--font-tech-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--ink-line);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--ink-950);
+}
+
+/* Subtle brushed-metal texture used behind hero/CTA panels — a css-only
+   noise + diagonal sheen, no image asset needed. */
+.metal-sheen {
+  background-image:
+    linear-gradient(120deg, rgba(244, 249, 250, 0.05) 0%, transparent 35%, transparent 65%, rgba(244, 249, 250, 0.04) 100%),
+    repeating-linear-gradient(115deg, rgba(244, 249, 250, 0.015) 0px, rgba(244, 249, 250, 0.015) 1px, transparent 1px, transparent 3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
