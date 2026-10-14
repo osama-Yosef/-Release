@@ -36,10 +36,11 @@ hard cap on the free plan — so it's hosted as a GitHub Release asset on
 [osama-Yosef/-Release](https://github.com/osama-Yosef/-Release) instead,
 which has no such limit (up to 2GB/file) and needs no account/payment setup.
 
-Current release: `v1.0.0`, asset `default.apk` (GitHub renamed the uploaded
-`مكوجي.apk` — Arabic filenames aren't preserved on upload), reachable at:
-`https://github.com/osama-Yosef/-Release/releases/download/v1.0.0/default.apk`
-— already set as `NEXT_PUBLIC_APK_URL` in `.env.local`.
+Current release: `v2.3.1`, asset `Mokoji-Android-v2.3.1.apk` (use ASCII
+filenames — GitHub renames Arabic ones to `default.apk` on upload), reachable at:
+`https://github.com/osama-Yosef/-Release/releases/download/v2.3.1/Mokoji-Android-v2.3.1.apk`
+— set as `NEXT_PUBLIC_APK_URL` in `.env.local` (NEXT_PUBLIC_* values are baked in
+at build time, so a new release needs `npm run cf:deploy` to go live).
 
 **To publish a new version:** go to the repo → Releases → Draft a new
 release → new tag (e.g. `v1.1.0`) → attach the new APK → Publish, then
