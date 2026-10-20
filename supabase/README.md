@@ -36,9 +36,10 @@ hard cap on the free plan — so it's hosted as a GitHub Release asset on
 [osama-Yosef/-Release](https://github.com/osama-Yosef/-Release) instead,
 which has no such limit (up to 2GB/file) and needs no account/payment setup.
 
-Current release: `v2.3.1`, asset `Mokoji-Android-v2.3.1.apk` (use ASCII
-filenames — GitHub renames Arabic ones to `default.apk` on upload), reachable at:
-`https://github.com/osama-Yosef/-Release/releases/download/v2.3.1/Mokoji-Android-v2.3.1.apk`
+Current release: `v2.3.2`, hosted on the app repo's own releases
+([osama-Yosef/steam-gallery-app](https://github.com/osama-Yosef/steam-gallery-app/releases)),
+reachable at:
+`https://github.com/osama-Yosef/steam-gallery-app/releases/download/v2.3.2/Mokoji-v2.3.2.apk`
 — set as `NEXT_PUBLIC_APK_URL` in `.env.local` (NEXT_PUBLIC_* values are baked in
 at build time, so a new release needs `npm run cf:deploy` to go live).
 
